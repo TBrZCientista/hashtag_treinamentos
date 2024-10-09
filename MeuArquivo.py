@@ -9,4 +9,24 @@ import pandas as pd
 
 tabela_de_vendas = pd.read_excel("Vendas.xlsx")
 
-print(tabela_de_vendas)
+pd.set_option("display.max_columns",None)
+
+faturamento = tabela_de_vendas[['ID Loja','Valor Final']].groupby('ID Loja').sum()
+
+#o processo acima, filtrou as colunas ID LOja e Valor final, e depois agrupou as lojas e somou seus valores de venda
+
+print(faturamento)
+
+qtd_prod_vend_loja = tabela_de_vendas[["ID Loja","Quantidade"]].groupby('ID Loja').sum()
+
+#o processo acima, filtrou as culonas ID Loja e Quantidade, e depois agrupou as lojas e a quantidade dos produtos vendidos
+
+print(qtd_prod_vend_loja)
+
+ticket_medio = (faturamento['Valor Final'] / qtd_prod_vend_loja['Quantidade']).to_frame()
+
+#como não podemos fazer operações diretamente entre as tabelas, podemos selecionar dentro das tabelas
+#as colunas que queremos que sejam operadas. No final foi utilizado o to_frame para colocar os dados
+#numa tabela, pois o retorno sem ele são só um conjunto de dados.
+
+print(ticket_medio)
