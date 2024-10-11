@@ -6,6 +6,7 @@
 #enviar e-mail com relatório
 
 import pandas as pd
+import win32com.client as win32
 
 tabela_de_vendas = pd.read_excel("Vendas.xlsx")
 
@@ -30,3 +31,28 @@ ticket_medio = (faturamento['Valor Final'] / qtd_prod_vend_loja['Quantidade']).t
 #numa tabela, pois o retorno sem ele são só um conjunto de dados.
 
 print(ticket_medio)
+
+outlook = win32.Dispatch('outlook.application')
+mail = outlook.CreateItem(0)
+mail.To = 'felipefreitasdaschagas@hotmail.com'
+mail.Subject = 'Relatório de vendas por Loja'
+mail.HTMLBody = '''
+Prezados,
+Segue o relatório de vendas por cada Loja.
+
+Faturamento:
+{}
+
+Quantidade Vendida:
+{}
+
+Ticket Médio dos produtos em cada Loja:
+{}
+
+Qualquer dúvida estou a disposição.
+
+At.te:
+Freitas
+'''
+
+mail.Send()
